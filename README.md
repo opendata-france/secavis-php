@@ -12,7 +12,7 @@ composer require opendata-france/secavis-php
 ```
 <?php
 
-use OpenDataFrance\Secavis;
+use Secavis\Secavis;
 
 $declaration = Secavis::get('REFERENCE_AVIS', 'IDENTIFIANT_FISCAL');
 ```
