@@ -9,69 +9,6 @@ use Secavis\Exception\BadRequestException;
 class DataTransformerTest extends TestCase
 {
     /**
-     * @dataProvider declarantExceptionProvider
-     */
-    public function testGetNomException(int $i): void
-    {
-        $this->expectException(BadRequestException::class);
-        (new DataTransformer(''))->getNom($i);
-    }
-
-    /**
-     * @dataProvider declarantExceptionProvider
-     */
-    public function testGetNomNaissanceException(int $i): void
-    {
-        $this->expectException(BadRequestException::class);
-        (new DataTransformer(''))->getNomNaissance($i);
-    }
-
-    /**
-     * @dataProvider declarantExceptionProvider
-     */
-    public function testGetPrenomException(int $i): void
-    {
-        $this->expectException(BadRequestException::class);
-        (new DataTransformer(''))->getPrenom($i);
-    }
-
-    /**
-     * @dataProvider declarantExceptionProvider
-     */
-    public function testGetDateNaissanceException(int $i): void
-    {
-        $this->expectException(BadRequestException::class);
-        (new DataTransformer(''))->getDateNaissance($i);
-    }
-
-    /**
-     * @dataProvider declarantExceptionProvider
-     */
-    public function testGetAdresseException(int $i): void
-    {
-        $this->expectException(BadRequestException::class);
-        (new DataTransformer(''))->getAdresse($i);
-    }
-
-    /**
-     * @dataProvider declarantExceptionProvider
-     */
-    public function testGetCodePostalException(int $i): void
-    {
-        $this->expectException(BadRequestException::class);
-        (new DataTransformer(''))->getCodePostal($i);
-    }
-
-    /**
-     * @dataProvider declarantExceptionProvider
-     */
-    public function testGetCommuneException(int $i): void
-    {
-        $this->expectException(BadRequestException::class);
-        (new DataTransformer(''))->getCommune($i);
-    }
-
-    /**
      * @dataProvider declarantMethodProvider
      */
     public function testDeclarantGetters(string $method, ?string $key, mixed $value, string $input): void
@@ -124,11 +61,6 @@ class DataTransformerTest extends TestCase
             </table>
         </div>
         EOT;
-    }
-
-    private function declarantExceptionProvider(): array
-    {
-        return [[0], [3]];
     }
 
     private function declarantMethodProvider(): array

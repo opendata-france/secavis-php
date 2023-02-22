@@ -2,8 +2,10 @@
 
 namespace Secavis\Api;
 
-use Secavis\Exception\BadRequestException;
+use Secavis\Exception\DeclarationNotFoundException;
 use Secavis\Exception\ServiceUnavailableException;
+use Secavis\Request\IdentifiantFiscal;
+use Secavis\Request\ReferenceAvis;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
@@ -15,11 +17,10 @@ class Secavis
 
     /**
      * @throws ServiceUnavailableException
-     * @throws BadRequestException
      */
-    public static function get(string $numeroFiscal, string $referenceAvis): null|string
+    public static function get(IdentifiantFiscal $identifiantFiscal, ReferenceAvis $referenceAvis): null|string
     {
-        /** @var Response */
+        /** @var ResponseInterface */
         $preRespone = static::preRequest();
 
         if ($preRespone->getStatusCode() !== 200) {
@@ -32,14 +33,19 @@ class Secavis
             throw new \RuntimeException('Erreur lors de la récupération de la valeur ViewsState.');
         }
 
-        /** @var Response */
-        $response = static::request($viewState, $numeroFiscal, $referenceAvis);
+        /** @var ResponseInterface */
+        $response = static::request($viewState, $identifiantFiscal, $referenceAvis);
 
         if ($response->getStatusCode() !== 200) {
             throw new ServiceUnavailableException($response->getContent());
         }
 
-        return $response->getContent();
+        $html = $response->getContent();
+
+        if ((new Crawler($html))->filter('div[class="titre_affiche_avis"]')->count() === 0) {
+            throw new DeclarationNotFoundException($html);
+        }
+        return $html;
     }
 
     private static function preRequest(): ResponseInterface
@@ -55,11 +61,11 @@ class Secavis
         return $nodes->count() > 0 ? $nodes->first()->attr('value') : null;
     }
 
-    private static function request(null|string $viewState, string $numeroFiscal, string $referenceAvis): ResponseInterface
+    private static function request(null|string $viewState, IdentifiantFiscal $identifiantFiscal, ReferenceAvis $referenceAvis): ResponseInterface
     {
         $formFields = self::mapFormData();
-        $formFields['j_id_7:spi'] = $numeroFiscal;
-        $formFields['j_id_7:num_facture'] = $referenceAvis;
+        $formFields['j_id_7:spi'] = $identifiantFiscal->value;
+        $formFields['j_id_7:num_facture'] = $referenceAvis->value;
         $formFields['javax.faces.ViewState'] = $viewState;
 
         $formData = new FormDataPart($formFields);

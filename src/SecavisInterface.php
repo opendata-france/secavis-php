@@ -2,9 +2,16 @@
 
 namespace Secavis;
 
-use Secavis\Entity\Declaration;
+use Secavis\Response\Declaration;
 
 interface SecavisInterface
 {
-    public static function get(string $referenceAvis, string $numeroFiscal): ?Declaration;
+    /**
+     * @param string Identifiant fiscal
+     * @param string Référence de l'avis d'imposition
+     * 
+     * @throws \InvalidArgumentException
+     * @throws Secavis\Exception\ServiceUnavailableException
+     */
+    public static function get(string $identifiantFiscal, string $referenceAvis): Declaration;
 }

@@ -2,15 +2,21 @@
 
 namespace Secavis;
 
-use Secavis\Entity\Declaration;
+use Secavis\Factory\DeclarationFactory;
+use Secavis\Response\Declaration;
+use Secavis\Request\IdentifiantFiscal;
+use Secavis\Request\ReferenceAvis;
 
 class Secavis implements SecavisInterface
 {
     /**
      * @inheritdoc
      */
-    public static function get(string $referenceAvis, string $numeroFiscal): ?Declaration
+    public static function get(string $identifiantFiscal, string $referenceAvis): Declaration
     {
-        return Declaration::create($numeroFiscal, $referenceAvis);
+        return (new DeclarationFactory)->from(
+            IdentifiantFiscal::from($identifiantFiscal),
+            ReferenceAvis::from($referenceAvis)
+        );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Secavis\Entity;
+namespace Secavis\Response;
 
 final class Declarant
 {
@@ -13,4 +13,9 @@ final class Declarant
         public readonly ?string $codePostal,
         public readonly ?string $commune
     ) {}
+
+    public function isValide(): bool
+    {
+        return null !== $this->nom;
+    }
 }
