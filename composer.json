@@ -10,12 +10,12 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^8.0",
         "ext-json": "*",
-        "symfony/css-selector": "^5.3",
-        "symfony/dom-crawler": "^5.3",
-        "symfony/mime": "^5.3",
-        "symfony/http-client": "^6.1"
+        "symfony/css-selector": "^6.2",
+        "symfony/dom-crawler": "^6.2",
+        "symfony/mime": "^6.2",
+        "symfony/http-client": "^6.2"
     },
     "autoload": {
         "psr-4": {
